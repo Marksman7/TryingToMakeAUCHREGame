@@ -1,0 +1,927 @@
+
+//Help from https://stackoverflow.com/questions/3473438/return-array-in-a-function = forgot how to pass an array in return on a method
+
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include <time.h>
+
+#include<vector>
+
+
+
+
+//problems passing stuff though this
+
+
+
+class Shufflethis
+{
+private:
+    int Deck[24] = { 11, 12, 13, 14, 15, 16, 21, 22, 23, 24, 25, 26, 31, 32, 33, 34, 35, 36, 41, 42, 43, 44, 45, 46 };
+
+    //int ShuffleDeck[24] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+    int Randy = 0;
+
+public:
+    int* shufflinIt()
+    {
+        int ShuffleDeck[24] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        srand((unsigned int)time(NULL));
+
+        for (int i = 0; i < 23; i++)
+        {
+
+            bool Next = false;
+
+
+            while (Next == false)
+            {
+                Randy = rand() % 24;
+                int Cout = 0;
+
+                for (int e = 0; e < 24; e++)
+                {
+                    if (ShuffleDeck[e] != Deck[Randy])
+                    {
+                        Cout = Cout + 1;
+                    }
+                }
+
+                if (Cout >= 24)
+                {
+                    Next = true;
+                    ShuffleDeck[i] = Deck[Randy];
+
+                    //std::cout << ShuffleDeck[i] << std::endl;
+                }
+
+            }
+
+        }
+
+
+
+        /*
+        for (int a = 0; a < 24; a++)
+        {
+            std::cout << ShuffleDeck[a] << std::endl;
+        }*/
+
+        // std::cout << "ok" << std::endl;
+        return ShuffleDeck;
+        //return ShuffleDeck[0], ShuffleDeck[1], ShuffleDeck[2], ShuffleDeck[3], ShuffleDeck[4], ShuffleDeck[5], ShuffleDeck[6], ShuffleDeck[7], ShuffleDeck[8], ShuffleDeck[8], ShuffleDeck[10], ShuffleDeck[11], ShuffleDeck[12], ShuffleDeck[13], ShuffleDeck[14], ShuffleDeck[15], ShuffleDeck[16], ShuffleDeck[17], ShuffleDeck[18], ShuffleDeck[20], ShuffleDeck[21], ShuffleDeck[22], ShuffleDeck[23];
+    }
+};
+
+
+class PlayerChosin
+{
+private:
+    //card the player choices
+    int HeadCard = 0;
+    int Over = 0;
+    bool ifTrump = false;
+    bool ifTrumpnext = false;
+    int PlayerHand[5] = { 0, 0, 0, 0, 0 };
+public:
+    int playerChoice(int zero, int two, int three, int four, int five, int Trump, int NextTrump)
+    {
+        this->ifTrump = false;
+        this->ifTrumpnext = false;
+        this->HeadCard = 0;
+        this->Over = 0;
+        this->PlayerHand[0] = zero;
+        this->PlayerHand[1] = two;
+        this->PlayerHand[2] = three;
+        this->PlayerHand[3] = four;
+        this->PlayerHand[4] = five;
+
+        for (int a = 0; a < 5; a++)
+        {
+            //std::cout << PlayerHand[a] << std::endl;
+        }
+        for (int i = 0; i < 5; i++)
+        {
+
+            
+
+                if ((this->PlayerHand[i] - (this->PlayerHand[i] % 10)) / 10 == Trump)
+                {
+
+                    if ((this->PlayerHand[i] % 10) > (this->HeadCard % 10))
+                    {
+                        this->HeadCard = this->PlayerHand[i];
+                        this->Over = i;
+                        this->ifTrump = true;
+                    }
+
+                    
+
+                }
+                else if ((this->PlayerHand[i] - (this->PlayerHand[i] % 10)) / 10 == NextTrump && this->ifTrump != true)
+                {
+                    if ((this->PlayerHand[i] % 10) > (this->HeadCard % 10))
+                    {
+                        this->HeadCard = this->PlayerHand[i];
+                        this->Over = i;
+                        this->ifTrumpnext = true;
+                    }
+
+                }
+                else if (((this->PlayerHand[i] % 10) > (this->HeadCard % 10)) && this->ifTrump != true && this->ifTrumpnext != true)
+                {
+                    this->HeadCard = this->PlayerHand[i];
+                }
+                /*else
+                {
+
+                    if (this->HeadCard == 0 && ifTrumpnext != true)
+                    {
+                        this->HeadCard = PlayerHand[i];
+                        this->Over = i;
+                    }
+
+                    
+
+
+                }*/
+
+
+            }
+        
+        //takes out the valuse that needs to be set to zero
+        
+
+        for (int w = 0; w < 5; w++)
+        {
+            if (this->HeadCard == this->PlayerHand[w])
+            {
+                //std::cout << HeadCard << std::endl;
+                //std::cout << PlayerHand[w] << std::endl;
+                //std::cout << Over << std::endl;
+                this->Over = w;
+            }
+        }
+       //std::cout << "(";
+      // std::cout << Over << std::endl;
+      // std::cout << "-";
+       //std::cout << HeadCard << std::endl;
+        //std::cout << (this->HeadCard * 10) + this->Over << std::endl;
+        return (this->HeadCard * 10) + this->Over;
+    }
+};
+
+
+
+
+class WinnerChicken
+{
+private:
+    int Hi = 5;
+    bool TrumpJack = false;
+    bool NextTrumpJack = false;
+public:
+    int RoundWinner(int Middles[4], int Trump, int NextTrump)
+    {
+        
+
+        for (int m = 0; m < 4; m++)
+        {
+            if ((Middles[m] - (Middles[m] % 10)) / 10 == Trump)
+            {
+                if ((Middles[m] % 10) == 3)
+                {
+                    this->Hi = m;
+                    this->TrumpJack = true;
+                    this->NextTrumpJack = false;
+                }
+                else if ((Middles[m] % 10) >= (Middles[Hi] % 10) && TrumpJack == false && NextTrumpJack == false)
+                {
+                    this->Hi = m;
+                }
+            }
+            else if ((Middles[m] - (Middles[m] % 10)) / 10 == NextTrump && TrumpJack == false)
+            {
+                if ((Middles[m] % 10) == 3)
+                {
+                    this->Hi = m;
+                    this->NextTrumpJack = true;
+                }
+                else if ((Middles[m] % 10) >= (Middles[Hi] % 10) && TrumpJack == false && NextTrumpJack == false)
+                {
+                    if (((Middles[Hi] - (Middles[Hi] % 10)) / 10) != Trump)
+                    {
+                        this->Hi = m;
+                    }
+                }
+            }
+            else if (TrumpJack == false && NextTrumpJack == false)
+            {
+                if ((Middles[m] % 10) >= (Middles[Hi] % 10))
+                {
+                    if (((Middles[Hi] - (Middles[Hi] % 10)) / 10) != Trump && ((Middles[Hi] - (Middles[Hi] % 10)) / 10) != NextTrump)
+                    {
+                        this->Hi = m;
+                    }
+                }
+            }
+        }
+        //std::cout << Middles[Hi] << std::endl;
+        //std::cout << Hi << std::endl;
+        return this->Hi;
+
+    }
+};
+
+
+class TrumplyIt
+{
+private:
+    int Trumpy = 0;
+    int Decider = 0;
+public:
+    int TrumpShuffler(int RedOne[5], int BlueOne[5], int RedTwo[5], int BlueTwo[5], int LastCard, bool Bluefirst)
+    {
+        //std::cout << LastCard << std::endl;
+
+        if (Bluefirst == true)
+        {
+            for (int g = 0; g < 5; g++)
+            {
+                if (((BlueOne[g] - (BlueOne[g] % 10)) / 10) == ((LastCard - (LastCard % 10)) / 10) && (BlueOne[g] % 10) == 3)
+                {
+                    this->Trumpy = ((LastCard - (LastCard % 10)) / 10);
+                    this->Decider = 1;
+                }
+                else if (((RedOne[g] - (RedOne[g] % 10)) / 10) == ((LastCard - (LastCard % 10)) / 10) && (RedOne[g] % 10) == 3)
+                {
+                    this->Trumpy = ((LastCard - (LastCard % 10)) / 10);
+                    this->Decider = 2;
+                }
+                else if (((BlueTwo[g] - (BlueTwo[g] % 10)) / 10) == ((LastCard - (LastCard % 10)) / 10) && (BlueTwo[g] % 10) == 3)
+                {
+                    this->Trumpy = ((LastCard - (LastCard % 10)) / 10);
+                    this->Decider = 1;
+                }
+                else if (((RedTwo[g] - (RedTwo[g] % 10)) / 10) == ((LastCard - (LastCard % 10)) / 10) && (RedTwo[g] % 10) == 3)
+                {
+                    this->Trumpy = ((LastCard - (LastCard % 10)) / 10);
+                    this->Decider = 2;
+                }
+
+
+                if (Trumpy == 0)
+                {
+                    //int LastOne = 0;
+                    for (int f = 0; f < 5; f++)
+                    {
+                        if ((BlueOne[g] % 10) != 0)
+                        {
+                            this->Trumpy = ((BlueOne[g] - (BlueOne[g] % 10)) / 10);
+                            this->Decider = 1;
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (int g = 0; g < 5; g++)
+            {
+                if (((RedOne[g] - (RedOne[g] % 10)) / 10) == ((LastCard - (LastCard % 10)) / 10) && (RedOne[g] % 10) == 3)
+                {
+                    this->Trumpy = ((LastCard - (LastCard % 10)) / 10);
+                    this->Decider = 2;
+                }
+                else if (((BlueOne[g] - (BlueOne[g] % 10)) / 10) == ((LastCard - (LastCard % 10)) / 10) && (BlueOne[g] % 10) == 3)
+                {
+                    this->Trumpy = ((LastCard - (LastCard % 10)) / 10);
+                    this->Decider = 1;
+                }
+                else if (((RedTwo[g] - (RedTwo[g] % 10)) / 10) == ((LastCard - (LastCard % 10)) / 10) && (RedTwo[g] % 10) == 3)
+                {
+                    this->Trumpy = ((LastCard - (LastCard % 10)) / 10);
+                    this->Decider = 2;
+                }
+                else if (((BlueTwo[g] - (BlueTwo[g] % 10)) / 10) == ((LastCard - (LastCard % 10)) / 10) && (BlueTwo[g] % 10) == 3)
+                {
+                    this->Trumpy = ((LastCard - (LastCard % 10)) / 10);
+                    this->Decider = 1;
+                }
+
+                if (Trumpy == 0)
+                {
+                    //int LastOnes = 0;
+                    for (int f = 0; f < 5; f++)
+                    {
+                        if ((RedOne[g] % 10) != 0)
+                        {
+                            this->Trumpy = ((RedOne[g] - (RedOne[g] % 10)) / 10);
+                            this->Decider = 2;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        if (Trumpy == 0)
+        {
+            this->Trumpy = ((LastCard - (LastCard % 10)) / 10);
+            
+        }
+        //std::cout << LastCard << std::endl;
+        //std::cout << Trumpy << std::endl;
+        //std::cout << Decider << std::endl;
+
+        return (this->Decider*10) + this->Trumpy;
+    }
+};
+/*
+int TrumpShuffler(int RedOne[5], int BlueOne[5], int RedTwo[5], int BlueTwo[5], int LastCard, bool Bluefirst)
+{
+
+    int Trumpy = 0;
+    int Decider = 0;
+    std::cout << LastCard << std::endl;
+
+    if (Bluefirst == true)
+    {
+        for (int g = 0; g < 5; g++)
+        {
+            if (((BlueOne[g] - (BlueOne[g] % 10)) / 10) == ((LastCard - (LastCard % 10)) / 10) && (BlueOne[g] % 10) == 3)
+            {
+                Trumpy = ((LastCard - (LastCard % 10)) / 10);
+                Decider = 1;
+            }
+            else if (((RedOne[g] - (RedOne[g] % 10)) / 10) == ((LastCard - (LastCard % 10)) / 10) && (RedOne[g] % 10) == 3)
+            {
+                Trumpy = ((LastCard - (LastCard % 10)) / 10);
+                Decider = 0;
+            }
+            else if (((BlueTwo[g] - (BlueTwo[g] % 10)) / 10) == ((LastCard - (LastCard % 10)) / 10) && (BlueTwo[g] % 10) == 3)
+            {
+                Trumpy = ((LastCard - (LastCard % 10)) / 10);
+                Decider = 1;
+            }
+            else if (((RedTwo[g] - (RedTwo[g] % 10)) / 10) == ((LastCard - (LastCard % 10)) / 10) && (RedTwo[g] % 10) == 3)
+            {
+                Trumpy = ((LastCard - (LastCard % 10)) / 10);
+                Decider = 0;
+            }
+
+
+            if (Trumpy == 0)
+            {
+                //int LastOne = 0;
+                for (int f = 0; f < 5; f++)
+                {
+                    if ((BlueOne[g] % 10) != 0)
+                    {
+                        Trumpy = ((BlueOne[g] - (BlueOne[g] % 10)) / 10);
+                        Decider = 1;
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        for (int g = 0; g < 5; g++)
+        {
+            if (((RedOne[g] - (RedOne[g] % 10)) / 10) == ((LastCard - (LastCard % 10)) / 10) && (RedOne[g] % 10) == 3)
+            {
+                Trumpy = ((LastCard - (LastCard % 10)) / 10);
+                Decider = 0;
+            }
+            else if (((BlueOne[g] - (BlueOne[g] % 10)) / 10) == ((LastCard - (LastCard % 10)) / 10) && (BlueOne[g] % 10) == 3)
+            {
+                Trumpy = ((LastCard - (LastCard % 10)) / 10);
+                Decider = 1;
+            }
+            else if (((RedTwo[g] - (RedTwo[g] % 10)) / 10) == ((LastCard - (LastCard % 10)) / 10) && (RedTwo[g] % 10) == 3)
+            {
+                Trumpy = ((LastCard - (LastCard % 10)) / 10);
+                Decider = 0;
+            }
+            else if (((BlueTwo[g] - (BlueTwo[g] % 10)) / 10) == ((LastCard - (LastCard % 10)) / 10) && (BlueTwo[g] % 10) == 3)
+            {
+                Trumpy = ((LastCard - (LastCard % 10)) / 10);
+                Decider = 1;
+            }
+
+            if (Trumpy == 0)
+            {
+                //int LastOnes = 0;
+                for (int f = 0; f < 5; f++)
+                {
+                    if ((RedOne[g] % 10) != 0)
+                    {
+                        Trumpy = ((RedOne[g] - (RedOne[g] % 10)) / 10);
+                        Decider = 0;
+                    }
+                }
+            }
+
+        }
+    }
+
+    if (Trumpy == 0)
+    {
+        Trumpy = ((LastCard - (LastCard % 10)) / 10);
+
+    }
+    //std::cout << LastCard << std::endl;
+    std::cout << Trumpy << std::endl;
+    std::cout << Decider << std::endl;
+
+    return Trumpy, Decider;
+}*/
+
+class OtherTopCard
+{
+private:
+    int NextTrumpy = 0;
+public:
+    int GetBackUpTrump(int FinalTrump)
+    {
+        
+
+
+        if (FinalTrump == 1)
+        {
+            this->NextTrumpy = 4;
+        }
+        else if (FinalTrump == 2)
+        {
+            this->NextTrumpy = 3;
+        }
+        else if (FinalTrump == 3)
+        {
+            this->NextTrumpy = 2;
+        }
+        else if (FinalTrump == 4)
+        {
+            this->NextTrumpy = 1;
+        }
+
+        return this->NextTrumpy;
+    }
+};
+
+
+
+
+
+int main()
+{
+    srand((unsigned int)time(NULL));
+
+    //std::string Dimond[6] = { "Nine", "Ten", "Jack", "Qween", "King", "Ace"};
+
+    //std::string Heart[6] = { "Nine", "Ten", "Jack", "Qween", "King", "Ace" };
+
+    //std::string Spade[6] = { "Nine", "Ten", "Jack", "Qween", "King", "Ace" };
+
+   // std::string Clove[6] = { "Nine", "Ten", "Jack", "Qween", "King", "Ace" };
+
+    //4=Clove 1=Spade 2=Heart 3=Dimond
+    //0 = 9 1= 10 2= jack =3 qween =4 king = 4 ace = 5
+    std::string names[6] = { "Nine", "Ten", "Jack", "Qween", "King", "Ace" };
+
+    int Trump = 0;
+
+    int NextTrump = 0;
+
+    int Deck[24] = { 12, 13, 14, 15, 16, 21, 22, 23, 24, 25, 26, 31, 32, 33, 34, 35, 36, 41, 42, 43, 44, 45, 46 };
+
+    //int ShuffleDeck[24] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+    int TShuffleDeck[24] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+    int RedOne[5] = { 0, 0, 0, 0, 0 };
+
+    int RedTwo[5] = { 0, 0, 0, 0, 0 };
+
+    int BlueOne[5] = { 0, 0, 0, 0, 0 };
+
+    int BlueTwo[5] = { 0, 0, 0, 0, 0 };
+
+    int cardsMiddle[4] = { 0,0,0,0 };
+
+    int That; //thenumber being returned
+
+    int Ladder = 0; //counts up to the last card
+
+    int RoundWon = 0;
+
+    int redPoints = 0;
+    int bluePoints = 0;
+
+    bool Switch = false;
+
+    int Team = 0;
+
+    int Dont = 0;
+
+    int Randy = 0;
+
+    /*std::cout << "RedOne" << std::endl;
+    for (int s = 0; s < 5; s++)
+    {
+        std::cout << RedOne[s] << std::endl;
+    }
+    std::cout << "BlueOne" << std::endl;
+    for (int s = 0; s < 5; s++)
+    {
+        std::cout << BlueOne[s] << std::endl;
+    }
+    std::cout << "RedTwo" << std::endl;
+    for (int s = 0; s < 5; s++)
+    {
+        std::cout << RedTwo[s] << std::endl;
+    }
+    std::cout << "BlueTwo" << std::endl;
+    for (int s = 0; s < 5; s++)
+    {
+        std::cout << BlueTwo[s] << std::endl;
+    }*/
+    
+
+
+    //cardsMiddle[0], That = playerChoice(cardsMiddle, RedOne, Trump, NextTrump);
+
+    //RedOne[That] = 0;
+    //RoundWon = RoundWinner(cardsMiddle, Trump, NextTrump);
+
+    
+
+    while (redPoints < 10 && bluePoints < 10)
+    {
+
+
+        //shuffle Deck
+        Trump = 0;
+        NextTrump = 0;
+        Ladder = 0;
+
+        Shufflethis Shupple = Shufflethis();
+
+        Shufflethis Shuppl = Shufflethis();
+
+        PlayerChosin Paly = PlayerChosin();
+
+        WinnerChicken Chicken = WinnerChicken();
+
+        TrumplyIt TruIt = TrumplyIt();
+
+        OtherTopCard OtherTrumper = OtherTopCard();
+        
+        //int* TShuffleDeck = Shupple.shufflinIt();
+
+        for (int zero = 0; zero < 23; zero++)
+        {
+            TShuffleDeck[zero] = 0;
+        }
+
+        for (int i = 0; i < 23; i++)
+        {
+
+            bool Next = false;
+
+
+            while (Next == false)
+            {
+                Randy = rand() % 24;
+                int Cout = 0;
+
+                for (int e = 0; e < 24; e++)
+                {
+                    if (TShuffleDeck[e] != Deck[Randy])
+                    {
+                        Cout = Cout + 1;
+                    }
+                }
+
+                if (Cout >= 24)
+                {
+                    Next = true;
+                    TShuffleDeck[i] = Deck[Randy];
+
+                    //std::cout << ShuffleDeck[i] << std::endl;
+                }
+
+            }
+
+        }
+       
+        //this->shuffleinIt = *TShuffleDeck();
+        //int* TShuffleDeck = shufflinIt();
+        //TShuffleDeck[0], TShuffleDeck[1], TShuffleDeck[2], TShuffleDeck[3], TShuffleDeck[4], TShuffleDeck[5], TShuffleDeck[6], TShuffleDeck[7], TShuffleDeck[8], TShuffleDeck[8], TShuffleDeck[10], TShuffleDeck[11], TShuffleDeck[12], TShuffleDeck[13], TShuffleDeck[14], TShuffleDeck[15], TShuffleDeck[16], TShuffleDeck[17], TShuffleDeck[18], TShuffleDeck[20], TShuffleDeck[21], TShuffleDeck[22], TShuffleDeck[23] = shufflinIt();
+
+        for (int a = 0; a < 24; a++)
+        {
+           // std::cout << TShuffleDeck[a] << std::endl;
+        }
+
+        if (Switch == true)
+        {
+            for (int a = 0; a < 5; a++)
+            {
+                BlueOne[a] = TShuffleDeck[Ladder];
+                Ladder = Ladder + 1;
+                RedOne[a] = TShuffleDeck[Ladder];
+                Ladder = Ladder + 1;
+                BlueTwo[a] = TShuffleDeck[Ladder];
+                Ladder = Ladder + 1;
+                RedTwo[a] = TShuffleDeck[Ladder];
+                Ladder = Ladder + 1;
+            }
+            Dont = TruIt.TrumpShuffler(BlueOne, RedOne, BlueTwo, RedTwo, TShuffleDeck[Ladder], false);
+            //std::cout << Dont << std::endl;
+            Trump = Dont % 10;
+            Team = (Dont - (Dont % 10)) / 10;
+            NextTrump = OtherTrumper.GetBackUpTrump(Trump);
+
+        }
+        else
+        {
+            for (int a = 0; a < 5; a++)
+            {
+                RedOne[a] = TShuffleDeck[Ladder];
+                Ladder = Ladder + 1;
+                BlueOne[a] = TShuffleDeck[Ladder];
+                Ladder = Ladder + 1;
+                RedTwo[a] = TShuffleDeck[Ladder];
+                Ladder = Ladder + 1;
+                BlueTwo[a] = TShuffleDeck[Ladder];
+                Ladder = Ladder + 1;
+            }
+            //(this->Decider*10) + this->Trumpy
+            Dont = TruIt.TrumpShuffler(BlueOne, RedOne, BlueTwo, RedTwo, TShuffleDeck[Ladder], false);
+            //std::cout << Dont << std::endl;
+            Trump = Dont % 10;
+            Team = (Dont - (Dont % 10)) / 10;
+
+            //Team = TruIt.TrumpShuffler(BlueOne, RedOne, BlueTwo, RedTwo, TShuffleDeck[Ladder], false);
+            //std::cout << Trump << std::endl;
+            //std::cout << Team << std::endl;
+            NextTrump = OtherTrumper.GetBackUpTrump(Trump);
+           //std::cout << NextTrump << std::endl;
+        }
+
+        
+
+        //Trump = (TShuffleDeck[Ladder] - (TShuffleDeck[Ladder] % 10)) / 10;
+        //Ladder = Ladder + 1;
+        //NextTrump = (TShuffleDeck[Ladder] - (TShuffleDeck[Ladder] % 10)) / 10;
+
+        int RedTeam = 0;
+        int BlueTeam = 0;
+        //std::cout << BlueOne[1] << std::endl;
+
+        /*for (int s = 0; s < 5; s++)
+        {
+            std::cout << RedOne[s] << std::endl;
+        }
+        std::cout << "BlueOne" << std::endl;
+        for (int s = 0; s < 5; s++)
+        {
+            std::cout << BlueOne[s] << std::endl;
+        }
+        std::cout << "RedTwo" << std::endl;
+        for (int s = 0; s < 5; s++)
+        {
+            std::cout << RedTwo[s] << std::endl;
+        }
+        std::cout << "BlueTwo" << std::endl;
+        for (int s = 0; s < 5; s++)
+        {
+            std::cout << BlueTwo[s] << std::endl;
+        }*/
+
+        if (Switch == false)
+        {
+            for (int r = 0; r < 5; r++)
+            {
+                
+                //std::cout << BlueOne[1] << std::endl;
+                Dont = Paly.playerChoice(RedOne[0], RedOne[1], RedOne[2], RedOne[3], RedOne[4], Trump, NextTrump);
+                cardsMiddle[0] = (Dont - (Dont % 10)) / 10;
+                That = Dont % 10;
+                RedOne[That] = 0;
+                //std::cout << Dont << std::endl;
+                //std::cout << cardsMiddle[0] << std::endl;
+                //std::cout << "0*";
+                //std::cout << That << std::endl;
+                Dont = Paly.playerChoice(BlueOne[0], BlueOne[1], BlueOne[2], BlueOne[3], BlueOne[4], Trump, NextTrump);
+                cardsMiddle[1] = (Dont - (Dont % 10)) / 10;
+                That = Dont % 10;
+                BlueOne[That] = 0;
+                //std::cout << "1*";
+                //std::cout << That << std::endl;
+                Dont = Paly.playerChoice(RedTwo[0], RedTwo[1], RedTwo[2], RedTwo[3], RedTwo[4], Trump, NextTrump);
+                cardsMiddle[2] = (Dont - (Dont % 10)) / 10;
+                That = Dont % 10;
+                RedTwo[That] = 0;
+                //std::cout << "2*";
+                //std::cout << That << std::endl;
+                Dont = Paly.playerChoice(BlueTwo[0], BlueTwo[1], BlueTwo[2], BlueTwo[3], BlueTwo[4], Trump, NextTrump);
+                cardsMiddle[3] = (Dont - (Dont % 10)) / 10;
+                That = Dont % 10;
+                BlueTwo[That] = 0;
+                //std::cout << "3*";
+                //std::cout << That << std::endl;
+                
+                /*
+                cardsMiddle[0] = RedOne[r];
+                RedOne[r] = 0;
+                //std::cout << cardsMiddle[0] << std::endl;
+                cardsMiddle[1] = BlueOne[r];
+                BlueOne[r] = 0;
+                cardsMiddle[2] = RedTwo[r];
+                RedTwo[r] = 0;
+                cardsMiddle[3]= BlueTwo[r];
+                BlueTwo[r] = 0;
+                */
+                for (int a = 0; a < 4; a++)
+                {
+                    //std::cout << cardsMiddle[a] << std::endl;
+                    //std::cout << RedOne[a] << std::endl;
+                }
+
+                //std::cout << cardsMiddle[3] << std::endl;
+
+
+                //std::cout << BlueOne[1] << std::endl;
+
+
+                RoundWon = Chicken.RoundWinner(cardsMiddle, Trump, NextTrump);
+
+                if (RoundWon == 0 || RoundWon == 2)
+                {
+                    RedTeam = RedTeam + 1;
+                }
+                else
+                {
+                    BlueTeam = BlueTeam + 1;
+                }
+
+            }
+
+            Switch = true;
+        }
+        else
+        {
+            for (int r = 0; r < 5; r++)
+            {
+
+
+                //(this->HeadCard * 10) + this->Over;
+                
+                Dont = Paly.playerChoice(BlueOne[0], BlueOne[1], BlueOne[2], BlueOne[3], BlueOne[4], Trump, NextTrump);
+                cardsMiddle[1] = (Dont - (Dont % 10)) / 10;
+                That = Dont % 10;
+                BlueOne[That] = 0;
+                //std::cout << That << std::endl;
+                //std::cout << cardsMiddle[1] << std::endl;
+                Dont = Paly.playerChoice(RedOne[0], RedOne[1], RedOne[2], RedOne[3], RedOne[4], Trump, NextTrump);
+                cardsMiddle[0] = (Dont - (Dont % 10)) / 10;
+                That = Dont % 10;
+                RedOne[That] = 0;
+                Dont = Paly.playerChoice(BlueTwo[0], BlueTwo[1], BlueTwo[2], BlueTwo[3], BlueTwo[4], Trump, NextTrump);
+                cardsMiddle[3] = (Dont - (Dont % 10)) / 10;
+                That = Dont % 10;
+                BlueTwo[That] = 0;
+                Dont = Paly.playerChoice(RedTwo[0], RedTwo[1], RedTwo[2], RedTwo[3], RedTwo[4], Trump, NextTrump);
+                cardsMiddle[2] = (Dont - (Dont % 10)) / 10;
+                That = Dont % 10;
+                RedTwo[That] = 0;
+
+
+                /*
+                cardsMiddle[1] = RedOne[r];
+                RedOne[r] = 0;
+                //std::cout << cardsMiddle[0] << std::endl;
+                cardsMiddle[1] = BlueOne[r];
+                BlueOne[r] = 0;
+                cardsMiddle[3] = RedTwo[r];
+                RedTwo[r] = 0;
+                cardsMiddle[2] = BlueTwo[r];
+                BlueTwo[r] = 0;
+                */
+                /*
+                for (int s = 0; s < 5; s++)
+                {
+                    std::cout << RedOne[s] << std::endl;
+                }
+                std::cout << "BlueOne" << std::endl;
+                for (int s = 0; s < 5; s++)
+                {
+                    std::cout << BlueOne[s] << std::endl;
+                }
+                std::cout << "RedTwo" << std::endl;
+                for (int s = 0; s < 5; s++)
+                {
+                    std::cout << RedTwo[s] << std::endl;
+                }
+                std::cout << "BlueTwo" << std::endl;
+                for (int s = 0; s < 5; s++)
+                {
+                    std::cout << BlueTwo[s] << std::endl;
+                }*/
+
+                for (int heres = 0; heres < 4; heres++)
+                {
+                    //std::cout << heres;
+                    //std::cout << " : ";
+                    //std::cout << cardsMiddle[heres] << std::endl;
+                }
+
+                RoundWon = Chicken.RoundWinner(cardsMiddle, Trump, NextTrump);
+
+                if (RoundWon == 0 || RoundWon == 2)
+                {
+                    RedTeam = RedTeam + 1;
+                }
+                else
+                {
+                    BlueTeam = BlueTeam + 1;
+                }
+            }
+
+            Switch = false;
+        }
+
+
+
+        if (Team == 2)
+        {
+            if (RedTeam >= 5)
+            {
+                redPoints = redPoints + 2;
+                std::cout << "DRed2" << std::endl;
+            }
+            else if (RedTeam >= 3)
+            {
+                redPoints = redPoints + 1;
+                std::cout << "DRed1" << std::endl;
+            }
+            else if (BlueTeam >= 5)
+            {
+                bluePoints = bluePoints + 2;
+                std::cout << "Blue2" << std::endl;
+            }
+            else if (BlueTeam >= 3)
+            {
+                bluePoints = bluePoints + 4;
+                std::cout << "Blue4" << std::endl;
+            }
+        }
+        else
+        {
+            if (RedTeam >= 5)
+            {
+                redPoints = redPoints + 4;
+                std::cout << "Red4" << std::endl;
+            }
+            else if (RedTeam >= 3)
+            {
+                redPoints = redPoints + 2;
+                std::cout << "Red2" << std::endl;
+            }
+            else if (BlueTeam >= 5)
+            {
+                bluePoints = bluePoints + 2;
+                std::cout << "DBlue2" << std::endl;
+            }
+            else if (BlueTeam >= 3)
+            {
+                bluePoints = bluePoints + 1;
+
+                std::cout << "DBlue1" << std::endl;
+            }
+        }
+
+        //RedTeam = 0;
+        //BlueTeam = 0;
+
+    }
+
+
+    if (redPoints >= 10)
+    {
+
+        std::cout << "Red Team is Victorious!\n" << std::endl;
+    }
+    else
+    {
+
+        std::cout << "Blue Team has destroyed the competion!\n" << std::endl;
+    }
+
+
+    std::cout << "End!\n" << std::endl;
+}
